@@ -13,6 +13,7 @@ return [
         'queue' => [
             'hub' => env('RABBITMQ_QUEUE_HUB'),
         ],
+        'use_ssl' => env('RABBITMQ_USE_SSL', true),
     ],
     'db' => [
         'host' => env('HUB_DB_HOST', '127.0.0.1'),
