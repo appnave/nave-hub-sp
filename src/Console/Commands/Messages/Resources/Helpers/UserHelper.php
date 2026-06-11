@@ -4,7 +4,8 @@ namespace BildVitta\SpHub\Console\Commands\Messages\Resources\Helpers;
 
 use BildVitta\SpHub\Events\Users\UserUpdated;
 use BildVitta\SpHub\Models\HubCompany;
-use Hash;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use stdClass;
 
@@ -18,7 +19,7 @@ trait UserHelper
         if (! $user = $modelUser::withTrashed()->where('hub_uuid', $message->uuid)->first()) {
             $user = new $modelUser;
             $user->hub_uuid = $message->uuid;
-            $user->password = Hash::make('password');
+            $user->password = Hash::make(Str::random(16));
         }
         $user->name = $message->name;
         $user->email = $message->email;
@@ -42,6 +43,8 @@ trait UserHelper
             $user->state = $message->state;
             $user->postal_code = $message->postal_code;
         }
+
+        $this->handleUserWithSameEmailAndDifferentUUID($message->email, $message->uuid);
 
         $user->save();
 
@@ -126,5 +129,22 @@ trait UserHelper
         }
 
         return null;
+    }
+
+    private function handleUserWithSameEmailAndDifferentUUID(?string $email, ?string $hubUuid): void
+    {
+        if (empty($email) || empty($hubUuid)) {
+            return;
+        }
+
+        $userClass = config('sp-hub.model_user');
+        $usersWithSameEmail = $userClass::withTrashed()
+            ->where('hub_uuid', '!=', $hubUuid)
+            ->where('email', $email)
+            ->get();
+        foreach ($usersWithSameEmail as $userWithSameEmail) {
+            $userWithSameEmail->email = sprintf('duplicated_%s|%s', Str::lower(Str::random(6)), $email);
+            $userWithSameEmail->save();
+        }
     }
 }
