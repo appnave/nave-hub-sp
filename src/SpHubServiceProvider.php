@@ -34,6 +34,7 @@ class SpHubServiceProvider extends PackageServiceProvider
                 'add_is_approving_proposals_and_approval_level_to_user_companies_table',
                 'add_main_company_id_on_brands_table',
                 'remove_is_approving_proposals_and_approval_level_to_user_companies_table',
+                'adjust_unique_indexes_on_role_table',
             ])
             ->runsMigrations();
     }
