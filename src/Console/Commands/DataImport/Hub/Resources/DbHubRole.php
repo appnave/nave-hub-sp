@@ -23,7 +23,7 @@ class DbHubRole
             OFFSET :offset';
 
         return DB::connection('sp_hub')->select($query, [
-            'limit' => $limit,
+            'limit'  => $limit,
             'offset' => $offset,
         ]);
     }
@@ -40,7 +40,7 @@ class DbHubRole
 
         return DB::connection('sp_hub')->select($query, [
             'role_id' => $roleId,
-            'slug' => $slug,
+            'slug'    => $slug,
         ]);
     }
 }

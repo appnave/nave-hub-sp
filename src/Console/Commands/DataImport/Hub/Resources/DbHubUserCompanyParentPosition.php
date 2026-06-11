@@ -25,7 +25,7 @@ class DbHubUserCompanyParentPosition
             OFFSET :offset';
 
         return DB::connection('sp_hub')->select($query, [
-            'limit' => $limit,
+            'limit'  => $limit,
             'offset' => $offset,
         ]);
     }

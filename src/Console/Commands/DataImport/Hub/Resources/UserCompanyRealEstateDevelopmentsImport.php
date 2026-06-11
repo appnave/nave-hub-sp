@@ -15,7 +15,7 @@ class UserCompanyRealEstateDevelopmentsImport
         $userCompanyModel = $userCompanyClass::where('user_company_id', $this->getUserCompanyId($userCompany->user_company_uuid))
             ->first();
         if (! $userCompanyModel) {
-            $userCompanyModel = new $userCompanyClass;
+            $userCompanyModel = new $userCompanyClass();
         }
 
         $userCompanyModel->user_company_id = $this->getUserCompanyId($userCompany->user_company_uuid);

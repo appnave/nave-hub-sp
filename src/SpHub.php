@@ -2,4 +2,6 @@
 
 namespace BildVitta\SpHub;
 
-class SpHub {}
+class SpHub
+{
+}

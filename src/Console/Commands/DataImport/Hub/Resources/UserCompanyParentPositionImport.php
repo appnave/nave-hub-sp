@@ -17,7 +17,7 @@ class UserCompanyParentPositionImport
             ->where('user_company_parent_id', $this->getUserCompanyId($userCompany->user_company_parent_uuid))
             ->first();
         if (! $userCompanyModel) {
-            $userCompanyModel = new $userCompanyClass;
+            $userCompanyModel = new $userCompanyClass();
         }
 
         $userCompanyModel->user_company_id = $this->getUserCompanyId($userCompany->user_company_uuid);

@@ -9,7 +9,11 @@ use stdClass;
 
 class SupervisorBrokerUpdated
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
-    public function __construct(public stdClass $message) {}
+    public function __construct(public stdClass $message)
+    {
+    }
 }

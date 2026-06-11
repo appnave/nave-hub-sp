@@ -14,7 +14,7 @@ trait RoleHelper
             ->first();
 
         if (! $roleModel) {
-            $roleModel = new $roleModelFromConfig;
+            $roleModel = new $roleModelFromConfig();
         }
 
         $roleModel->uuid = $message->uuid;

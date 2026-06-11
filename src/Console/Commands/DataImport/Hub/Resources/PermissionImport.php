@@ -17,7 +17,7 @@ class PermissionImport
             ->first();
 
         if (! $permissionModel) {
-            $permissionModel = new $permissionModelFromConfig;
+            $permissionModel = new $permissionModelFromConfig();
         }
 
         $permissionModel->name = $permission->name;

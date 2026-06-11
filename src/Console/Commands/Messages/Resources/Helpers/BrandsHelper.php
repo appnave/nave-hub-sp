@@ -10,7 +10,7 @@ trait BrandsHelper
     protected function brandCreateOrUpdate(\stdClass $message)
     {
         if (! $brand = HubBrand::withTrashed()->where('uuid', $message->uuid)->first()) {
-            $brand = new HubBrand;
+            $brand = new HubBrand();
             $brand->uuid = $message->uuid;
         }
 

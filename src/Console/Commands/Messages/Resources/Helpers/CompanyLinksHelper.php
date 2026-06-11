@@ -15,7 +15,7 @@ trait CompanyLinksHelper
             ->where('uuid', $message->uuid)
             ->first();
         if (! $userCompanyModel) {
-            $userCompanyModel = new $userCompanyClass;
+            $userCompanyModel = new $userCompanyClass();
         }
 
         $companyId = $this->getCompanyId($message->company_uuid);

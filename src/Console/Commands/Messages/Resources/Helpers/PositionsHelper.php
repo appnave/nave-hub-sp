@@ -15,7 +15,7 @@ trait PositionsHelper
             ->where('uuid', $message->uuid)
             ->first();
         if (! $positionModel) {
-            $positionModel = new $positionClass;
+            $positionModel = new $positionClass();
         }
 
         $positionModel->uuid = $message->uuid;

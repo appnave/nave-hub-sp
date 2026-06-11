@@ -16,7 +16,7 @@ class PositionImport
             ->where('uuid', $position->uuid)
             ->first();
         if (! $positionModel) {
-            $positionModel = new $positionClass;
+            $positionModel = new $positionClass();
         }
         $positionModel->uuid = $position->uuid;
         $positionModel->name = $position->name;
