@@ -13,7 +13,7 @@ trait LogHelper
     private function logError(Throwable $exception, $message): void
     {
         try {
-            $worker = new Worker;
+            $worker = new Worker();
             $worker->type = 'rabbitmq.worker.error';
             $worker->payload = [
                 'message' => $message,
@@ -21,9 +21,9 @@ trait LogHelper
             $worker->status = Worker::STATUS_ERROR;
             $worker->error = [
                 'message' => $exception->getMessage(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => $exception->getTraceAsString(),
+                'file'    => $exception->getFile(),
+                'line'    => $exception->getLine(),
+                'trace'   => $exception->getTraceAsString(),
             ];
             $worker->schedule = now();
             $worker->save();

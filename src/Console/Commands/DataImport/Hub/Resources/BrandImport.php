@@ -12,7 +12,7 @@ class BrandImport
             ->first();
 
         if (! $brandModel) {
-            $brandModel = new $brandModelFromConfig;
+            $brandModel = new $brandModelFromConfig();
         }
 
         $brandModel->uuid = $brand->uuid;

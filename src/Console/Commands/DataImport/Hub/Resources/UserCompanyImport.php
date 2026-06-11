@@ -16,7 +16,7 @@ class UserCompanyImport
             ->where('uuid', $userCompany->uuid)
             ->first();
         if (! $userCompanyModel) {
-            $userCompanyModel = new $userCompanyClass;
+            $userCompanyModel = new $userCompanyClass();
         }
 
         $userCompanyModel->uuid = $userCompany->uuid;

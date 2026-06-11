@@ -1,64 +1,140 @@
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/bildvitta/sp-hub.svg?style=flat-square)](https://packagist.org/packages/bildvitta/sp-hub)
-[![Total Downloads](https://img.shields.io/packagist/dt/bildvitta/sp-hub.svg?style=flat-square)](https://packagist.org/packages/bildvitta/sp-hub)
+# SP Hub
 
-## Introduction
+## Visão geral
 
-The SP (Space Probe) package is responsible for collecting remote data updates for the module, keeping the data structure similar as possible, through the message broker.
+`appnave/nave-hub-sp` é um pacote privado de Laravel para sincronização e importação de dados do SP via RabbitMQ.
 
-## Installation
+O consumo é feito em projetos clientes por meio de repositório VCS no `composer.json`.
 
-You can install the package via composer:
+## Requisitos
 
-```bash 
-composer require bildvitta/sp-hub:dev-develop
+- PHP 8.0, 8.1, 8.2 ou 8.3
+- Laravel 8, 9, 10, 11 ou 12
+- Composer 2
+- Acesso ao repositório privado do pacote
+- RabbitMQ para uso dos comandos de mensagem e configuração
+- Banco de dados acessível para a importação do hub, quando aplicável
+
+## Acesso a Repositórios Privados
+
+No projeto cliente, adicione o repositório VCS no `composer.json`:
+
+```json
+{
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/ORG/REPO"
+    }
+  ]
+}
 ```
 
-For everything to work perfectly in addition to having the settings file published in your application, run the command below:
+Instale o pacote:
 
 ```bash
-php artisan sp:install
+composer require appnave/nave-hub-sp:dev-develop
 ```
 
-To configure the queues in RabbitMQ just run this command that it automatically creates based on the settings you passed in `config/sp-hub.php`
+Autenticação local do Composer com GitHub:
+
+```bash
+composer config -g github-oauth.github.com <YOUR_TOKEN>
+```
+
+GitHub Actions:
+
+```yaml
+env:
+  COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+```
+
+Se o pacote ou alguma dependência privada exigir outro token, use um secret próprio no lugar do `GITHUB_TOKEN`.
+
+## Instalação Local
+
+No projeto cliente:
+
+```bash
+composer install
+php artisan sp-hub:install
+```
+
+Se o ambiente usar RabbitMQ, rode também:
 
 ```bash
 php artisan sp-hub:configure
 ```
 
-## Configuration
+Depois de ajustar `.env` ou `config/sp-hub.php`, recarregue o cache de configuração se o projeto usar cache:
 
-This is the contents of the published config file:
+```bash
+php artisan config:clear
+php artisan config:cache
+```
+
+## Variáveis de Ambiente
+
+```dotenv
+RABBITMQ_HOST=
+RABBITMQ_PORT=5672
+RABBITMQ_USER=
+RABBITMQ_PASSWORD=
+RABBITMQ_VIRTUALHOST=/
+RABBITMQ_EXCHANGE_HUB=hub
+RABBITMQ_QUEUE_HUB=
+RABBITMQ_USE_SSL=true
+
+HUB_DB_HOST=127.0.0.1
+HUB_DB_PORT=3306
+HUB_DB_DATABASE=forge
+HUB_DB_USERNAME=forge
+HUB_DB_PASSWORD=
+```
+
+Em ambiente `local`, o worker usa conexão sem SSL automaticamente.
+
+## Useful Commands
+
+```bash
+php artisan sp-hub:install
+php artisan sp-hub:configure
+php artisan rabbitmqworker:hub
+php artisan dataimport:hub --select=500 --offset=0 --tables=brands,companies,users,positions,permissions,roles,user_companies,user_company_parent_positions,user_company_real_estate_developments
+```
+
+- `sp-hub:install` publica a configuração e as migrations do pacote.
+- `sp-hub:configure` cria exchange e fila no RabbitMQ quando o ambiente estiver habilitado.
+- `rabbitmqworker:hub` consome e processa mensagens.
+- `dataimport:hub` inicia a importação em background.
+
+## Conventions
+
+- O pacote publica migrations para tabelas e colunas relacionadas a users, companies, brands, roles e workers.
+- Se o modelo `User` do projeto cliente usar mass assignment, inclua os campos extras suportados pelo pacote no `$fillable`.
+- Campos mais usados pelo pacote:
 
 ```php
-return [
-    'rabbitmq' => [
-        'host' => env('RABBITMQ_HOST'),
-        'port' => env('RABBITMQ_PORT'),
-        'user' => env('RABBITMQ_USER'),
-        'password' => env('RABBITMQ_PASSWORD'),
-        'virtualhost' => env('RABBITMQ_VIRTUALHOST', '/'),
-        'exchange' => [
-            'hub' => env('RABBITMQ_EXCHANGE_HUB', 'hub'),
-        ],
-        'queue' => [
-            'hub' => env('RABBITMQ_QUEUE_HUB'),
-        ]
-    ],
-];
-```
-
-With the configuration file sp-hub.php published in your configuration folder it is necessary to create environment variables in your .env file:
-
-## Enable extra columns sync
-
-Add these attributes to the user model's `$fillable` property.
-
-```
-'document', 
-'address', 
-'street_number', 
+'document',
+'address',
+'street_number',
 'complement',
 'city',
 'state',
 'postal_code',
 ```
+
+- Para `Company`, as migrations também podem exigir:
+
+```php
+'company_name',
+'document',
+'address',
+'street_number',
+'complement',
+'city',
+'state',
+'postal_code',
+```
+
+- Este pacote é privado e depende da configuração do projeto cliente para repositórios Composer, variáveis de ambiente, RabbitMQ e banco do hub.

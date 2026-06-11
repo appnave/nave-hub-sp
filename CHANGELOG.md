@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `SP-CRM` will be documented in this file.
+All notable changes to `nave-hub-sp` will be documented in this file.
 
 ## dev - 2022-08
 

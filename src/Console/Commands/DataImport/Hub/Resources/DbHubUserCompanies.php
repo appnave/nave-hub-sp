@@ -40,7 +40,7 @@ class DbHubUserCompanies
             OFFSET :offset';
 
         return DB::connection('sp_hub')->select($query, [
-            'limit' => $limit,
+            'limit'  => $limit,
             'offset' => $offset,
         ]);
     }
@@ -56,7 +56,7 @@ class DbHubUserCompanies
             OFFSET :offset';
 
         return DB::connection('sp_hub')->select($query, [
-            'limit' => $limit,
+            'limit'  => $limit,
             'offset' => $offset,
         ]);
     }
@@ -72,7 +72,7 @@ class DbHubUserCompanies
             OFFSET :offset';
 
         return DB::connection('sp_hub')->select($query, [
-            'limit' => $limit,
+            'limit'  => $limit,
             'offset' => $offset,
         ]);
     }

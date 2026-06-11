@@ -19,7 +19,7 @@ class DbHubCompany
         $query = 'SELECT c.*, main_company.uuid AS main_company_uuid, b.uuid AS brand_uuid FROM companies c LEFT JOIN companies main_company ON c.main_company_id = main_company.id LEFT JOIN brands b ON c.brand_id = b.id LIMIT :limit OFFSET :offset';
 
         return DB::connection('sp_hub')->select($query, [
-            'limit' => $limit,
+            'limit'  => $limit,
             'offset' => $offset,
         ]);
     }

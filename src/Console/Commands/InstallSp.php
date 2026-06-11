@@ -15,7 +15,7 @@ class InstallSp extends Command
      */
     private const VENDOR_PUBLISH_CONFIG_PARAMS = [
         '--provider' => SpHubServiceProvider::class,
-        '--tag' => 'sp-hub-config',
+        '--tag'      => 'sp-hub-config',
     ];
 
     /**

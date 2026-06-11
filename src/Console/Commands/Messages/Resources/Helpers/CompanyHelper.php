@@ -11,7 +11,7 @@ trait CompanyHelper
     private function companyCreateOrUpdate(stdClass $message): void
     {
         if (! $company = HubCompany::withTrashed()->where('uuid', $message->uuid)->first()) {
-            $company = new HubCompany;
+            $company = new HubCompany();
             $company->uuid = $message->uuid;
         }
         $company->name = $message->name;

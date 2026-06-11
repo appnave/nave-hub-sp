@@ -49,16 +49,16 @@ class HubImportCommand extends Command
         $tableIndex = 0;
         $tables = explode(',', $this->option('tables'));
 
-        $worker = new Worker;
+        $worker = new Worker();
         $worker->type = self::WORKER_TYPE;
         $worker->status = Worker::STATUS_CREATED;
         $worker->schedule = now();
         $worker->payload = [
-            'limit' => $selectLimit,
-            'offset' => $offset,
-            'total' => null,
+            'limit'       => $selectLimit,
+            'offset'      => $offset,
+            'total'       => null,
             'table_index' => $tableIndex,
-            'tables' => $tables,
+            'tables'      => $tables,
         ];
         $worker->save();
 

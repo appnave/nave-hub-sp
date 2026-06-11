@@ -17,7 +17,7 @@ trait UserHelper
     {
         $modelUser = config('sp-hub.model_user');
         if (! $user = $modelUser::withTrashed()->where('hub_uuid', $message->uuid)->first()) {
-            $user = new $modelUser;
+            $user = new $modelUser();
             $user->hub_uuid = $message->uuid;
             $user->password = Hash::make(Str::random(16));
         }

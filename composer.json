@@ -1,5 +1,5 @@
 {
-    "name": "bildvitta/sp-hub",
+    "name": "appnave/nave-hub-sp",
     "require": {
         "php": "^8.0|^8.1|^8.2|^8.3",
         "illuminate/contracts": "^8.0|^9.0|^10.0|^11.0|^12.0",
